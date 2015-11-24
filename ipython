@@ -1,0 +1,5 @@
+# usar ! para salir momentaneamente de python, bash ls
+!ls
+
+#save input lines 10 to 20 and 23 to my_useful_session.py
+%save my_useful_session 10-20 23
