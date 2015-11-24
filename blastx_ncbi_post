@@ -1,0 +1,29 @@
+inp=open('blastx_glimmer_ncbi_tce1.xls', 'r')
+inp2=inp.read()
+spl=inp2.split('# Query:')
+headers=open('headers_ncbi_DB.txt','r').read()
+intergenic=open('blastx_glimmer_annotated.xls','w') #no es intergenic, pero asi  se llama la variable ;)
+
+#####################headers
+headers= headers.split('>')
+#########################BLAST hits
+
+for a in spl:
+    positive='no'
+    if '# 0 hits found' not in a:
+        tabs=a.split('\t')
+        if len(tabs) > 12:
+            tabs=tabs[:12]
+        if len(tabs)>10:
+            ref=tabs[1]
+            evalue=float(tabs[10])
+            lenght=int(tabs[3])
+            if lenght > 50 and evalue < 0.1:
+                for h in headers:
+                        if ref in h:
+                                positive='si'
+                                intergenic.write(h[:-1]+' lenght '+str(lenght)+' evalue '+str(evalue)+'\n')
+                                #break
+                if positive=='no':
+                        intergenic.write('TCE-1 protein '+' lenght '+str(lenght)+' evalue '+str(evalue)+'\n')
+print 'fini'
