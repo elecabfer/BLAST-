@@ -1,0 +1,13 @@
+#coordinates, separated by tabs
+
+[-]
+[-]
+
+
+
+
+
+
+# Fields: query id, subject id, % identity, alignment length, mismatches, gap opens, q. start, q. end, s. start, s. end, evalue, bit score
+# 1 hits found
+#orf     2513048146      100.00  298     0       0       897     4       343     640     2e-172    502
