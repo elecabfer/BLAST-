@@ -1,0 +1,6 @@
+BLAST DB
+refseq	blastp -db refseq ...	Protein	RefSeq
+refseq_protein	blastp -db refseq_protein ...	Protein	RefSeq
+refseq	blastn -db refseq ...	Genomic+Nucleotidic	RefSeq
+refseq_genomic	blastn -db refseq_genomic ...	Genomic	RefSeq
+refseq_nucleotide	blastn -db refseq_nucleotide ...	Nucleotide
