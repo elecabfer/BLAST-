@@ -1,4 +1,4 @@
-inp=open('blastx_glimmer_ncbi_tce1.xls', 'r')
+inp=open('blastx_glimmer_ncbi_tce1_n3_b80.xls', 'r')
 inp2=inp.read()
 spl=inp2.split('# Query:')
 headers=open('headers_ncbi_DB.txt','r').read()
@@ -17,15 +17,17 @@ for a in range(0, len(spl)): #por cada enrtada del blast, que tiene mal el numer
         if len(tabs) > 12:
             tabs=tabs[:12]
         elif len(tabs)>10:
-            ref=tabs[1]
+            ref=tabs[1] #ref es el id del blast
             evalue=float(tabs[10])
+            qstart=tabs[6]
+            qend=tabs[7]
             lenght=int(tabs[3])
-            if lenght > 50 and evalue < 0.1:
+            if lenght > 1 and evalue < 10:
                 for h in headers:
                         if ref in h:
                                 positive='si'
-                                intergenic.write(h[:-1]+'\t'+str(lenght)+'\t'+str(evalue)+'\t'+orfs[a][1:orfs[a].find('\n')]+'\n')
+                                intergenic.write(h[:-1]+'\t'+str(qstart)+'\t'+str(qend)+'\t'+str(evalue)+'\t'+orfs[a][1:orfs[a].find('\n')]+'\n')
                                 #break
-                if positive=='no':
-                        intergenic.write(str(tabs[1])+'\t'+str(lenght)+'\t'+str(evalue)+'\t'+orfs[a][1:orfs[a].find('\n')]+'\n')
+                if positive=='no': #si la secuencia no esta 
+                        intergenic.write(str(tabs[1])+'\t'+str(qstart)+'\t'+str(qend)+'\t'+str(evalue)+'\t'+orfs[a][1:orfs[a].find('\n')]+'\n')
 print 'fini'
