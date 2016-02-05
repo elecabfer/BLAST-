@@ -1,0 +1,47 @@
+__author__ = 'admin'
+proteome=open('DhaTCE1_proteome.fasta.txt', 'r').read()
+excel=open('blastx_glimmer_annotated.xls', 'r').read()
+output=open('blastx_final.xls', 'w')
+output.write('Id'+'\t'+'Scaffold'+'\t'+'Glimmer Start\tGlimmer End'+'\t'+'Glimmer length'+'\t'+'Blastx Query Start'+'\t'+'Blastx Query End'+'\t'+'Blastx e-value\tDirection'+'\t'+'Protein name\tStrain'+'\n')
+###### PROTEOME ORIGINAL
+entry=proteome.split('>')  #separar por entrada fasta
+entry=entry[1:] #el entry[0] esta vacio: ''
+seq=[] #secuencia completa
+draft=[] #Scaffold
+seqstart=[]
+seqend=[]
+proteintce1=[] #tal y como esta anotada
+sequenceid=[]
+for j in range(0, len(entry)): #proteome in fasta format
+    nid=entry[j][0:10] #where the sequence is
+    proteintce1.append(entry[j][entry[j].find('DRAFT')+11:entry[j].find('[Desulfitobacterium hafniense TCE-1]')-1])
+    sequenceid.append(nid) #add sequence id
+    seq.append(entry[j][entry[j].index('\n')+1:])
+    draft.append(entry[j][11:26])
+
+###### EXCEL BLASTX
+lines=excel.split('\n')
+#lines=lines[1:] #eliminar header
+print len(lines) #5014
+for l in lines:
+    tabs=l.split('\t')
+    gstart= tabs[8][:tabs[8].find('..')] #
+    gend= tabs[8][tabs[8].find('..')+2:] #
+    glenght= abs(int(gstart)-int(gend))
+    souche='Desulfitobacterium hafniense TCE-1'
+    positivo='no'
+    if 'gi|' in l:
+        idfinal=tabs[0][:tabs[0].index(' ')]
+        protfinal=tabs[0][tabs[0].index(' ')+1:tabs[0].index('[')]
+        souche=tabs[0][tabs[0].index('[')+1:-1]
+        positivo='si'
+    else:
+        idfinal=tabs[0]
+        matchid=sequenceid.index(tabs[0])
+        protfinal=proteintce1[matchid]    #[sequenceid.index[tabs[0]]]
+        positivo='si'
+   # protfinal[0].upper()+protfinal[1:]
+    #print tabs
+    output.write(idfinal+'\t'+tabs[5]+'\t'+gstart+'\t'+gend+'\t'+str(glenght)+'\t'+tabs[1]+'\t'+tabs[2]+'\t'+tabs[3]+'\t'+tabs[9]+'\t'+protfinal+'\t'+souche+'\n')
+
+print 'Esta bien si, fini'
